@@ -30,4 +30,11 @@ sudo systemctl start kibana.service
 # установка Logstash
 sudo apt install logstash
 echo 'TimeoutStopSec=180' | sudo tee -a /etc/systemd/system/logstash.service
+elastic_password=`grep "elastic" passwords | sed 's:elastic - ::g'`
+sudo sed -i "s|elk_password|$elastic_password|g" src/output.conf
+sudo cp -rT src /etc/logstash/conf.d/
+sudo cp -R /etc/elasticsearch/certs /etc/logstash
+sudo chown -R root:logstash /etc/logstash/certs
+sudo systemctl daemon-reload
 sudo systemctl enable logstash.service
+sudo systemctl start logstash.service

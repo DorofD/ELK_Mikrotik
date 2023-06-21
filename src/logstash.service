@@ -1,0 +1,9 @@
+[Unit]
+Requires=elasticsearch.service
+After=elasticsearch.service
+
+[Service]
+ExecStart=/opt/logstash/bin/logstash agent -f /etc/logstash.conf
+
+[Install]
+WantedBy=multi-user.target
